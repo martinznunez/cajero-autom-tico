@@ -13,6 +13,9 @@ const KeyCode = ({
 }) => {
   const arrayNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, "Borrar", 0, "Continuar"];
 
+  //   const pad = Object.freeze({
+  //     BORRAR: "Borrar",
+  //   });
   const handleClick = (number) => {
     if (number === "Continuar") {
       handleClickContinuar();
@@ -41,11 +44,12 @@ const KeyCode = ({
   };
 
   const handleClickContinuar = () => {
-    setShowDisableClave(false);
-    setDisabledContinuar(false);
-
-    if (numberDni.length >= 7) {
+    if (numberDni.length >= 7 && showDisableClave) {
       setShowTurn("clave");
+
+      setShowDisableClave(false);
+      setDisabledContinuar(false);
+      return;
     }
   };
 

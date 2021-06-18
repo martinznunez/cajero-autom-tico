@@ -16,8 +16,10 @@ const Input = ({
       setDisabledContinuar(true);
     }
 
-    if (numberDni.length >= 8) {
+    if (numberDni.length === 8) {
       setShowDisableDni(true);
+
+      return;
     }
   }, [numberDni, setDisabledContinuar, setNumberDni, setShowDisableDni]);
 
