@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   height: 100vh;
 }
 
@@ -43,6 +42,17 @@
   width: 80%;
   display: flex;
   min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container_primary {
+  border: 3px solid;
+  margin: auto;
+  margin-top: 12vh;
+  width: 80%;
+  display: flex;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;

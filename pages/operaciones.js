@@ -1,11 +1,11 @@
-import OperacionLayout from "../components/OperationLayout";
+// import OperacionLayout from "../components/layout/OperationLayout";
 
-const Operaciones = () => {
-  return (
-    <>
-      <OperacionLayout />
-    </>
-  );
-};
+// const Operaciones = () => {
+//   return (
+//     <>
+//       <OperacionLayout />
+//     </>
+//   );
+// };
 
-export default Operaciones;
+// export default Operaciones;

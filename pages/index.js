@@ -1,9 +1,8 @@
 import Head from "next/head";
-
 import styles from "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Login from "../components/header/Login";
+import Login from "../components/layout/Login";
 
 export default function Home() {
   return (
