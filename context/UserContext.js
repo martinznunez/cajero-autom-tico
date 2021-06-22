@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Spinner } from "./components/Spinner";
+import { Spinner } from "../components/Spinner";
 export const UserContext = createContext();
-import styles from "./styles/Home.module.css";
+import styles from "../styles/Home.module.css";
 
 import { useRouter } from "next/router";
 
@@ -28,20 +28,24 @@ const UserProvider = (props) => {
       const respose = await axios.get(url);
 
       setClientInfo(respose.data);
+          
+          setTimeout(() => {
 
-      setTimeout(() => {
-        if (Number(clientInfo.clave) === Number(client.clave)) {
-          setUser({});
-          setLoading(false);
-          setMessageErrorUser("");
-          router.push("/operaciones");
+            if (Number(clientInfo.clave) === Number(client.clave)) {
+                console.log('aca')
+              setUser({});
+              router.push("/operacion/index");
+              setLoading(false);
+              setMessageErrorUser("");
+    
+              return;
+            } else {
+              setLoading(false);
+              setMessageErrorUser("Datos Incorrectos");
+            }
+          }, 4000);
+      
 
-          return;
-        } else {
-          setLoading(false);
-          setMessageErrorUser("Datos Incorrectos");
-        }
-      }, 4000);
     } catch (error) {
       setTimeout(() => {
         setMessageErrorUser(error.response.data.message);

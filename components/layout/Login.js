@@ -1,56 +1,76 @@
 import Title from "../Title";
-import Input from "../Input";
-import KeyCode from "../KeyCode";
+import InputForm from "../InputForm";
+
+import AuthView from "../AuthView";
+
 import { useState, useEffect, useContext } from "react";
 
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
   const { setUser, setLoading, messageErrorUser } = useContext(UserContext);
 
   const [numberDni, setNumberDni] = useState([]);
 
-  const [showDisableDni, setShowDisableDni] = useState(true);
+  const [isDniInputDisabled, setIsDniInputDisabled] = useState(false);
+
+  const [isPasswordInputDisabled, setIsPasswordInputDisabled] = useState(true);
 
   const [numberClave, setNumberClave] = useState([]);
 
-  const [showDisableClave, setShowDisableClave] = useState(true);
+  const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
-  const [disabledContinuar, setDisabledContinuar] = useState(false);
+  const [isPadDisabled, setIsPadDisabled] = useState(false);
 
-  const [showTurn, setShowTurn] = useState("dni");
+  const [turn, setTurn] = useState("dni");
 
   useEffect(() => {
     if (numberClave.length === 4) {
       setUser({ numberDni, numberClave });
 
-      setLoading(true);
+      setLoading(true);      
 
       return;
     }
-  }, [numberClave, numberDni, setLoading, setUser]);
+  }, [numberClave, numberDni,  setUser]);
 
   return (
     <>
       <div className="container-title">
         <Title title={"Cajero automático Tasi"} />
-        <Input
+        <InputForm
           setNumberDni={setNumberDni}
           numberDni={numberDni}
-          setShowDisableDni={setShowDisableDni}
-          showDisableDni={showDisableDni}
+          setIsDniInputDisabled={setIsDniInputDisabled}
+          isDniInputDisabled={isDniInputDisabled}
           numberClave={numberClave}
-          setShowDisableClave={setShowDisableClave}
-          showDisableClave={showDisableClave}
-          setDisabledContinuar={setDisabledContinuar}
-          disabledContinuar={disabledContinuar}
-          setShowTurn={setShowTurn}
+          isPasswordInputDisabled={isPasswordInputDisabled}
+          setIsPasswordInputDisabled={setIsPasswordInputDisabled}
+          setIsContinueDisabled={setIsContinueDisabled}
+          isContinueDisabled={isContinueDisabled}
+          setTurn={setTurn}
+          setIsPadDisabled={setIsPadDisabled}
         />
       </div>
 
       {messageErrorUser && <p> {messageErrorUser} </p>}
 
-      <KeyCode
+      <AuthView
+        isDniInputDisabled={isDniInputDisabled}
+        setNumberDni={setNumberDni}
+        numberDni={numberDni}
+        setNumberClave={setNumberClave}
+        numberClave={numberClave}
+        isPasswordInputDisabled={isPasswordInputDisabled}
+        setIsPasswordInputDisabled={setIsPasswordInputDisabled}
+        setIsContinueDisabled={setIsContinueDisabled}
+        isContinueDisabled={isContinueDisabled}
+        setTurn={setTurn}
+        turn={turn}
+        isPadDisabled={isPadDisabled}
+        setIsPadDisabled={setIsPadDisabled}
+      />
+      {/* <KeyCode
         setShowDisableDni={setShowDisableDni}
         setNumberDni={setNumberDni}
         numberDni={numberDni}
@@ -63,7 +83,7 @@ const Login = () => {
         setShowDisableClave={setShowDisableClave}
         setShowTurn={setShowTurn}
         showTurn={showTurn}
-      />
+      /> */}
 
       <style jsx>
         {`

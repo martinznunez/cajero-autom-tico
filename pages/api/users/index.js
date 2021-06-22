@@ -5,5 +5,3 @@ export default function user(req, res) {
     data: users,
   });
 }
-
-console.log(user);
