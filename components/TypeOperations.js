@@ -1,4 +1,4 @@
-import OperacionLayout from "./layout/OperationLayout";
+import Operacions from "./layout/Operations";
 import Extraccion from "./layout/Extraccion";
 import Deposit from "./layout/Deposit";
 import ConsultBalance from "./layout/ConsultBalance";
@@ -11,7 +11,7 @@ const TypeOperations = ({ pathname }) => {
   return (
     <>
       <div className={styles.container_primary}>
-        {pathname === "index" && <OperacionLayout />}
+        {pathname === "index" && <Operacions />}
         {pathname === "extraccion" && <Extraccion />}
         {pathname === "deposito" && <Deposit />}
         {pathname === "saldo" && <ConsultBalance />}

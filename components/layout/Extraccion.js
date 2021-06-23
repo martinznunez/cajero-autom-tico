@@ -2,6 +2,7 @@ import { Form, FormGroup, Label, CustomInput } from "reactstrap";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useRouter } from "next/router";
+import Title from "../Title";
 import Spinner from "../Spinner";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -10,27 +11,33 @@ const Extraccion = () => {
   const [loading, setLoading] = useState(false);
 
   const [moneySelect, setMoneySelect] = useState();
-  const { clientInfo } = useContext(UserContext);
+  const { clientInfo, setClientInfo, setTypeToOperation } =
+    useContext(UserContext);
 
   const router = useRouter();
 
   const updateClient = async (moneySelect) => {
-    const url = `api/balance/${clientInfo.id}/edit`;
-    console.log(
-      "%c 🍶 url: ",
-      "font-size:20px;background-color: #93C0A4;color:#fff;",
-      url
-    );
+    const url = `/api/balance/${clientInfo.id}`;
 
     try {
       const response = await axios.patch(url, {
         data: {
-          moneyToExtract: moneySelect,
+          typeOfOperation: "extraccion",
+          amount: moneySelect,
         },
       });
 
-      console.log(response);
-    } catch (error) {}
+      if (response.data) {
+        setClientInfo(response.data);
+        router.push("/operacion/exito");
+        setTypeToOperation({
+          typeOperation: "extraccion",
+          balance: moneySelect,
+        });
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
 
   const handleClickValidateMoney = () => {
@@ -46,8 +53,6 @@ const Extraccion = () => {
 
     if (clientInfo.saldo >= moneySelect) {
       updateClient(moneySelect);
-
-      alert("puede sacar");
     } else {
       Swal.fire({
         title:
@@ -73,12 +78,23 @@ const Extraccion = () => {
   };
 
   const handleClickCancel = () => {
-    router.push("/operacion/index");
+    Swal.fire({
+      title: "Seguro que quieres salir?",
+      icon: "warning",
+      showCancelButton: "#d33",
+      cancelButtonColor: true,
+      confirmButtonText: "Salir",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/operacion/cancelar");
+        return;
+      }
+    });
   };
 
   return (
     <>
-      <h2>Extracción</h2>
+      <Title title={"Extracción"} />
       <Form onChange={(e) => handleChangeMoney(e)}>
         <div className="container-form">
           <div className="container-money">
@@ -88,7 +104,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio"
                   name="customRadio"
-                  label="   $500"
+                  label="  $500"
                   value="500"
                 />
               </Label>
@@ -99,7 +115,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio2"
                   name="customRadio"
-                  label="   $2.000"
+                  label="  $2.000"
                   value="2000"
                 />
               </Label>
@@ -110,7 +126,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio3"
                   name="customRadio"
-                  label="   $3.000"
+                  label="  $3.000"
                   value="3000"
                 />
               </Label>
@@ -123,7 +139,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio4"
                   name="customRadio"
-                  label="   $5.000"
+                  label="  $5.000"
                   value="5000"
                 />
               </Label>
@@ -134,7 +150,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio5"
                   name="customRadio"
-                  label="   $6.000"
+                  label="  $6.000"
                   value="6000"
                 />
               </Label>
@@ -145,7 +161,7 @@ const Extraccion = () => {
                   type="radio"
                   id="exampleCustomRadio6"
                   name="customRadio"
-                  label="   Otro monto"
+                  label="  Otro monto"
                   value="otro monto"
                 />
               </Label>
@@ -189,9 +205,11 @@ const Extraccion = () => {
             font-size: 1.4rem;
             justify-content: center;
           }
-          {/* .check {
+
+          .check {
             margin-left: 20%;
-          } */}
+          }
+
           h2 {
             padding-top: 5%;
             font-size: 2rem;
@@ -225,20 +243,16 @@ const Extraccion = () => {
             cursor: no-drop;
             border-radius: 6px;
           }
-          @media (min-width: 1100px){
+          @media (min-width: 1100px) {
             .container-money {
-            width: 450px;
-           
-          }
-          button {
-            width: 20%;
-          }
-          .btn-disabled {
-            width: 20%;
-          }
-         
-
-
+              width: 450px;
+            }
+            button {
+              width: 20%;
+            }
+            .btn-disabled {
+              width: 20%;
+            }
           }
         `}
       </style>

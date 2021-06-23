@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 import { useRouter } from "next/router";
 
-const OperacionLayout = () => {
+const Operations = () => {
   const router = useRouter();
   const { clientInfo } = useContext(UserContext);
 
@@ -19,7 +19,7 @@ const OperacionLayout = () => {
       confirmButtonText: "Salir",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.push("/");
+        router.push("/operacion/cancelar");
         return;
       }
     });
@@ -34,21 +34,17 @@ const OperacionLayout = () => {
         <p>¿Qué operacion deseas realizar? </p>
       </div>
       <div className="options">
-        <Link href={`/operacion/extraccion`}>
-          <a>
-            <button>Extracción</button>
-          </a>
-        </Link>
-        <Link href={`/operacion/deposito`}>
-          <a>
-            <button>Depósito</button>
-          </a>
-        </Link>
-        <Link href={`/operacion/saldo`}>
-          <a>
-            <button>Consulta de Saldo</button>
-          </a>
-        </Link>
+        <button onClick={() => router.push("/operacion/extraccion")}>
+          Extracción
+        </button>
+
+        <button onClick={() => router.push("/operacion/deposito")}>
+          Depósito
+        </button>
+
+        <button onClick={() => router.push("/operacion/saldo")}>
+          Consulta de Saldo
+        </button>
       </div>
       <button className="btn-out" onClick={handleClickOut}>
         Cancelar
@@ -59,7 +55,7 @@ const OperacionLayout = () => {
           .options {
             display: flex;
             margin: auto;
-            margin-top: 5vh;
+            margin-top: 6vh;
             width: 90%;
             min-height: 10vh;
             flex-direction: row;
@@ -80,31 +76,27 @@ const OperacionLayout = () => {
             color: #000;
             font-weight: 800;
           }
-          a {
+
+          button {
             width: 35%;
-          }
-          a button {
             margin: 10px;
             color: #f1f1f1;
             font-size: 1.3rem;
-            width: 100%;
             height: 55px;
             background: dodgerblue;
             border-radius: 6px;
-            transition: all 0.3s cubic-bezier(0.67, 0.17, 0.4, 0.83);
           }
           button:hover {
             cursor: pointer;
           }
 
           .container-parrafo {
-            margin-top: 2vh;
             align-items: center;
             display: flex;
             justify-content: center;
             width: 90%;
             height: auto;
-            padding-top: 50px;
+            padding-top: 10px;
           }
           p {
             font-size: 1.5rem;
@@ -114,22 +106,23 @@ const OperacionLayout = () => {
           .btn-out {
             color: #f1f1f1;
             background: red;
+            text-align: center;
             margin-right: 75%;
             margin-bottom: 20px;
             width: 160px;
-            padding: 15px;
-            font-size: 1.2rem;
+
+            font-size: 1.4rem;
             border-radius: 6px;
           }
-          @media (min-width: 1000px){
+          @media (min-width: 1000px) {
             .options {
-            width: 70%;
+              width: 70%;
+            }
           }
-        }
         `}
       </style>
     </>
   );
 };
 
-export default OperacionLayout;
+export default Operations;
