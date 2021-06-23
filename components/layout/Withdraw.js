@@ -3,11 +3,10 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useRouter } from "next/router";
 import Title from "../Title";
-import Spinner from "../Spinner";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const Extraccion = () => {
+const Withdraw = () => {
   const [loading, setLoading] = useState(false);
 
   const [moneySelect, setMoneySelect] = useState();
@@ -260,4 +259,4 @@ const Extraccion = () => {
   );
 };
 
-export default Extraccion;
+export default Withdraw;
