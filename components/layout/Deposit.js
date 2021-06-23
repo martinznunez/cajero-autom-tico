@@ -1,54 +1,161 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import KeyPad from "../KeyPad";
 import Title from "../Title";
-
 import DepositAmount from "../DepositAmount";
+import { useRouter } from "next/router";
+import { UserContext } from "../../context/UserContext";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+const inputsMap = {
+  oneHundred: 100,
+  twoHundred: 200,
+  fiveHundred: 500,
+  oneThousand: 1000,
+};
+
 const Deposit = () => {
+  const { clientInfo, setClientInfo, setTypeToOperation } =
+    useContext(UserContext);
+  const router = useRouter();
 
-    const [isContinueDisabled, setIsContinueDisabled] = useState(true);
-  
-    const [messageError, setMessageError]=useState('')
+  const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
+  const [messageError, setMessageError] = useState(false);
 
+  const [totalToDeposit, setTotalToDeposit] = useState(0);
 
+  const [inputsValues, setInputsValues] = useState({
+    oneHundred: 0,
+    twoHundred: 0,
+    fiveHundred: 0,
+    oneThousand: 0,
+  });
 
-    const [numberPad, setNumberPad] = useState(0)
+  const [activeInput, setActiveInput] = useState("");
 
+  const updateClient = async () => {
+    const url = `/api/balance/${clientInfo.id}`;
 
-  const handleClickKey = (key) => {
-    setNumberPad(key)
+    try {
+      const response = await axios.patch(url, {
+        data: {
+          typeOfOperation: "deposit",
+          amount: totalToDeposit,
+        },
+      });
 
-    if (key >=  5) {
-        setMessageError('No puede ser mayor a 4')
-        return
+      if (response.data) {
+        setClientInfo(response.data);
+        router.push("/operacion/exito");
+        setTypeToOperation({
+          typeOperation: "deposito",
+          balance: totalToDeposit,
+        });
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
     }
-    setMessageError('')
-
-
-
   };
 
+  const handleClickKey = (key) => {
+    if (!activeInput) {
+      return;
+    }
 
-  console.log(numberPad)
+    if (key === "Continuar") {
+      updateClient();
+      return;
+    }
+
+    if (key === "Borrar") {
+      const valueToDiscount =
+        inputsValues[activeInput] * inputsMap[activeInput];
+
+      setTotalToDeposit((prevState) => (prevState -= valueToDiscount));
+      setInputsValues((prevState) => ({ ...prevState, [activeInput]: 0 }));
+
+      return;
+    }
+
+    if (key >= 5) {
+      setMessageError(true);
+      return;
+    }
+    setMessageError("");
+
+    const valueToSum = inputsMap[activeInput] * Number(key);
+
+    if (inputsValues[activeInput] !== 0) {
+      const prevValue = inputsValues[activeInput] * inputsMap[activeInput];
+      const newValue = totalToDeposit - prevValue + valueToSum;
+
+      setTotalToDeposit(newValue);
+    } else {
+      setTotalToDeposit((prevState) => (prevState += valueToSum));
+    }
+    setIsContinueDisabled(false);
+    setInputsValues((prevState) => ({ ...prevState, [activeInput]: key }));
+  };
+
+  useEffect(() => {
+    if (totalToDeposit === 0) {
+      setIsContinueDisabled(true);
+      return;
+    }
+  }, [totalToDeposit]);
+
+  const formatCurrency = (value) => {
+    const formatterDolar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    const formatterPesos = formatterDolar.format(value);
+
+    return formatterPesos;
+  };
+
+  const handlerClickCancel = () => {
+    Swal.fire({
+      title: "Seguro que quieres salir?",
+      icon: "warning",
+      showCancelButton: "#d33",
+      cancelButtonColor: true,
+      confirmButtonText: "Salir",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/operacion/cancelar");
+        return;
+      }
+    });
+  };
 
   return (
     <>
       <div className="container-title">
         <Title title="depósito" />
-        {messageError && <p className='message-error'> {messageError} </p>}
+        {messageError && (
+          <p className="message-error"> {"No puede ser mayor a 4"} </p>
+        )}
       </div>
       <div className="container-deposit">
-        <div className='container-amount'>
-          <DepositAmount  numberPad={numberPad} />
+        <div className="container-amount">
+          <DepositAmount
+            setActiveInput={setActiveInput}
+            inputsValues={inputsValues}
+          />
         </div>
         <div className="container-pad">
           <p> Monto a depositar</p>
-          <strong>$8774745</strong>
-          <KeyPad   handleClickKey={handleClickKey}   isContinueDisabled={isContinueDisabled} />
+          <strong> {formatCurrency(totalToDeposit)} </strong>
+          <KeyPad
+            handleClickKey={handleClickKey}
+            isContinueDisabled={isContinueDisabled}
+          />
         </div>
       </div>
       <div className="container-btn">
-        <button>Cancelar</button>
+        <button onClick={handlerClickCancel}>Cancelar</button>
       </div>
 
       <style jsx>
@@ -57,17 +164,16 @@ const Deposit = () => {
             margin-top: 10px;
             height: 190px;
             text-align: center;
-          
           }
-          .message-error{
-              color: red;
-              font-size: 1.2rem;
+          .message-error {
+            color: red;
+            font-size: 1.2rem;
           }
-         
+
           .container-deposit {
             width: 90%;
-            
-            margin-left:10%;
+
+            margin-left: 10%;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -97,7 +203,7 @@ const Deposit = () => {
 
           .container-pad {
             width: 90%;
-             height: 500px;
+            height: 500px;
             display: flex;
             justify-content: center;
             flex-direction: column;
@@ -105,9 +211,8 @@ const Deposit = () => {
           }
           .container-pad strong {
             padding-bottom: 10px;
+            font-size: 2rem;
           }
-
-        
         `}
       </style>
     </>

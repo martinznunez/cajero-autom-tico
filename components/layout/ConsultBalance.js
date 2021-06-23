@@ -2,31 +2,36 @@ import { useRouter } from "next/router";
 
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
+import Title from "../Title";
 const ConsultBalance = () => {
   const router = useRouter();
   const { clientInfo } = useContext(UserContext);
 
   const { saldo } = clientInfo;
 
-  const formatterDolar = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatterPesos = formatterDolar.format(saldo);
+  const formatCurrency = (value) => {
+    const formatterDolar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    const formatterPesos = formatterDolar.format(value);
+
+    return formatterPesos;
+  };
 
   return (
     <>
       <div className="container-saldo">
         <div>
-          <h2>Su saldo es</h2>
-          <p> {formatterPesos} </p>
+          <Title title={"Su saldo es"} />
+          <p>{formatCurrency(saldo)}</p>
         </div>
         <div>
           <p>¿Desea realizar otra operacion?</p>
         </div>
         <div className="container-btn">
           <button onClick={() => router.push("/operacion/index")}>SI</button>
-          <button onClick={() => router.push("/")}>NO</button>
+          <button onClick={() => router.push("/operacion/cancelar")}>NO</button>
         </div>
       </div>
 

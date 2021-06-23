@@ -1,21 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
+import { UserContext } from "../../context/UserContext";
+import Title from "../Title";
 import KeyPad from "../KeyPad";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const AmountMoney = () => {
   const router = useRouter();
+  const { clientInfo, setClientInfo, setTypeToOperation } =
+    useContext(UserContext);
   const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
   const [padNumber, setPadNumber] = useState([]);
 
-  const [newAmount, setNewAmount] = useState();
+  const updateClient = async (newAmount) => {
+    console.log(newAmount);
 
-  const formatterDolar = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
+    const url = `/api/balance/${clientInfo.id}`;
 
-  const formatterPesos = formatterDolar.format(padNumber.join(""));
+    try {
+      const response = await axios.patch(url, {
+        data: {
+          typeOfOperation: "extraccion",
+          amount: newAmount.join(""),
+        },
+      });
+
+      if (response.data) {
+        setClientInfo(response.data);
+        router.push("/operacion/exito");
+        setTypeToOperation({
+          typeOperation: "extracción",
+          balance: newAmount.join(""),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClickKey = (key) => {
     setPadNumber([...padNumber, key]);
@@ -23,39 +46,77 @@ const AmountMoney = () => {
     setIsContinueDisabled(false);
 
     if (key === "Borrar") {
-      setPadNumber([0]);
+      setPadNumber([]);
       setIsContinueDisabled(true);
     }
 
     if (key === "Continuar") {
-      setNewAmount(padNumber);
-      setPadNumber([0]);
-      setIsContinueDisabled(true);
+      const newAmount = padNumber;
+
+      if (newAmount.join("") <= clientInfo.saldo) {
+        updateClient(newAmount);
+        setPadNumber([]);
+        setIsContinueDisabled(true);
+      } else {
+        setPadNumber([]);
+        setIsContinueDisabled(true);
+        Swal.fire({
+          title:
+            "Su saldo es insuficiente.Puede consultar su saldo,probar con otro monto o cancelar la operacion",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: `Consultar Saldo`,
+          denyButtonText: `Otro monto`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/operacion/saldo");
+          } else if (result.isDismissed) {
+            router.push("/operacion/cancelar");
+          } else if (result.isDenied) {
+            router.push("/operacion/monto");
+          }
+        });
+      }
 
       return;
     }
+  };
 
-    // validar saldo
+  const formatCurrency = (value) => {
+    const formatterDolar = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    const formatterPesos = formatterDolar.format(value);
+
+    return formatterPesos;
   };
 
   const handlerClickCancel = () => {
-    // mostrat modal confirmacion de cancelar
-
-    router.push("/operacion/cancelar");
+    Swal.fire({
+      title: "Seguro que quieres salir?",
+      icon: "warning",
+      showCancelButton: "#d33",
+      cancelButtonColor: true,
+      confirmButtonText: "Salir",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/operacion/cancelar");
+        return;
+      }
+    });
   };
-
-  console.log(newAmount);
 
   return (
     <>
       <div className="container-title">
-        <h2>Otro monto</h2>
+        <Title title={"Otro monto"} />
       </div>
       <div className="container-operations">
         <div>
           <label>
             <p>
-              <strong> {formatterPesos} </strong>
+              <strong> {formatCurrency(padNumber.join(""))} </strong>
             </p>
           </label>
         </div>
@@ -75,12 +136,11 @@ const AmountMoney = () => {
         {`
           .container-title {
             height: 20vh;
-            padding-top: 40px;
+            padding-top: 0px;
           }
 
           .container-KeyCode {
             width: 70%;
-          
           }
 
           .container-operations {
@@ -89,8 +149,6 @@ const AmountMoney = () => {
             align-items: center;
             width: 100%;
             margin-left: 20%;
-         
-
           }
           strong {
             font-size: 2rem;
@@ -99,7 +157,7 @@ const AmountMoney = () => {
           .container-btn {
             display: flex;
             height: 15vh;
-            padding-bottom: 20px ;
+            padding-bottom: 20px;
             width: 90%;
             align-items: flex-end;
             justify-content: flex-start;

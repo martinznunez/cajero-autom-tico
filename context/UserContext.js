@@ -8,6 +8,11 @@ import { useRouter } from "next/router";
 
 const UserProvider = (props) => {
   const router = useRouter();
+
+  const [typeToOperation, setTypeToOperation] = useState({
+    typeOperation: "",
+    balance: "",
+  });
   const [messageErrorUser, setMessageErrorUser] = useState("");
 
   const [clientInfo, setClientInfo] = useState({});
@@ -17,6 +22,8 @@ const UserProvider = (props) => {
   const [loading, setLoading] = useState();
 
   const getUsers = useCallback(async () => {
+    setLoading(true);
+
     const client = {
       dni: user.numberDni.join(""),
       clave: user.numberClave.join(""),
@@ -25,34 +32,25 @@ const UserProvider = (props) => {
     const url = `api/users/${client.dni}`;
 
     try {
-      const respose = await axios.get(url);
+      const response = await axios.get(url);
 
-      setClientInfo(respose.data);
-          
-          setTimeout(() => {
-
-            if (Number(clientInfo.clave) === Number(client.clave)) {
-                console.log('aca')
-              setUser({});
-              router.push("/operacion/index");
-              setLoading(false);
-              setMessageErrorUser("");
-    
-              return;
-            } else {
-              setLoading(false);
-              setMessageErrorUser("Datos Incorrectos");
-            }
-          }, 4000);
-      
-
+      setClientInfo(response.data);
+      if (Number(clientInfo.clave) === Number(client.clave)) {
+        setUser({});
+        router.push("/operacion/index");
+        setTimeout(() => setLoading(false), 3000);
+        setMessageErrorUser("");
+      } else {
+        setLoading(false);
+        setMessageErrorUser("Datos Incorrectos");
+      }
     } catch (error) {
       setTimeout(() => {
         setMessageErrorUser(error.response.data.message);
         setLoading(false);
       }, 3000);
     }
-  }, [clientInfo.clave, router, user.numberClave, user.numberDni]);
+  }, [clientInfo, router, user.numberClave, user.numberDni]);
 
   useEffect(() => {
     if (user.numberDni) {
@@ -76,6 +74,9 @@ const UserProvider = (props) => {
         setLoading,
         messageErrorUser,
         clientInfo,
+        setClientInfo,
+        setTypeToOperation,
+        typeToOperation,
       }}
     >
       {props.children}

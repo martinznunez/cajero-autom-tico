@@ -3,7 +3,7 @@ import InputForm from "../InputForm";
 
 import AuthView from "../AuthView";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, clientInfo } from "react";
 
 import { UserContext } from "../../context/UserContext";
 
@@ -27,12 +27,8 @@ const Login = () => {
   useEffect(() => {
     if (numberClave.length === 4) {
       setUser({ numberDni, numberClave });
-
-      setLoading(true);      
-
-      return;
     }
-  }, [numberClave, numberDni,  setUser]);
+  }, [numberClave, numberDni, setUser]);
 
   return (
     <>
@@ -70,20 +66,6 @@ const Login = () => {
         isPadDisabled={isPadDisabled}
         setIsPadDisabled={setIsPadDisabled}
       />
-      {/* <KeyCode
-        setShowDisableDni={setShowDisableDni}
-        setNumberDni={setNumberDni}
-        numberDni={numberDni}
-        setNumberClave={setNumberClave}
-        numberClave={numberClave}
-        showDisableDni={showDisableDni}
-        showDisableClave={showDisableClave}
-        setDisabledContinuar={setDisabledContinuar}
-        disabledContinuar={disabledContinuar}
-        setShowDisableClave={setShowDisableClave}
-        setShowTurn={setShowTurn}
-        showTurn={showTurn}
-      /> */}
 
       <style jsx>
         {`
