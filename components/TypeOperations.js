@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { useRouter } from "next/router";
-
+import PropTypes from "prop-types";
 import Operations from "./layout/Operations";
 import Withdraw from "./layout/Withdraw";
 import Deposit from "./layout/Deposit";
@@ -37,6 +37,12 @@ const TypeOperations = ({ pathname }) => {
       </div>
     </>
   );
+};
+
+TypeOperations.propTypes = {
+  clientInfo: PropTypes.object,
+  setLoading: PropTypes.bool,
+  pathname: PropTypes.string.isRequired,
 };
 
 export default TypeOperations;

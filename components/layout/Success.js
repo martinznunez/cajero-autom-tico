@@ -1,6 +1,7 @@
 import { useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useRouter } from "next/router";
+import PropTypes from "prop-types";
 const Success = () => {
   const router = useRouter();
 
@@ -33,6 +34,10 @@ const Success = () => {
       </style>
     </>
   );
+};
+
+Success.propTypes = {
+  typeToOperation: PropTypes.object,
 };
 
 export default Success;

@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
 import Title from "../Title";
 const ConsultBalance = () => {
   const router = useRouter();
@@ -85,6 +85,10 @@ const ConsultBalance = () => {
       </style>
     </>
   );
+};
+
+ConsultBalance.propTypes = {
+  clientInfo: PropTypes.object,
 };
 
 export default ConsultBalance;

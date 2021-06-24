@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import PropTypes from "prop-types";
 const InputForm = ({
   numberDni,
   setIsDniInputDisabled,
@@ -119,4 +119,14 @@ const InputForm = ({
   );
 };
 
+InputForm.propTypes = {
+  numberDni: PropTypes.array,
+  setIsDniInputDisabled: PropTypes.func,
+  isDniInputDisabled: PropTypes.bool,
+  isPasswordInputDisabled: PropTypes.bool,
+  setIsPasswordInputDisabled: PropTypes.func,
+  numberClave: PropTypes.array,
+  setIsContinueDisabled: PropTypes.func,
+  setIsPadDisabled: PropTypes.func,
+};
 export default InputForm;

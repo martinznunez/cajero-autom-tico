@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext, clientInfo } from "react";
 import { UserContext } from "../../context/UserContext";
 import { generalConst } from "../../constants/general";
+import PropTypes from "prop-types";
 import Title from "../Title";
 import InputForm from "../InputForm";
-
 import AuthView from "../AuthView";
 
 const Login = () => {
@@ -93,6 +93,11 @@ const Login = () => {
       </style>
     </>
   );
+};
+
+Login.propTypes = {
+  messageErrorUser: PropTypes.string,
+  setUser: PropTypes.func,
 };
 
 export default Login;

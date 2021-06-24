@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const DepositAmount = ({ setActiveInput, inputsValues }) => {
   const handleOnFocus = (e) => {
     setActiveInput(e.target.name);
@@ -82,6 +83,11 @@ const DepositAmount = ({ setActiveInput, inputsValues }) => {
       </style>
     </>
   );
+};
+
+DepositAmount.propTypes = {
+  inputsValues: PropTypes.object,
+  setActiveInput: PropTypes.func,
 };
 
 export default DepositAmount;
