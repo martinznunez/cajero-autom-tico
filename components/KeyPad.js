@@ -1,13 +1,14 @@
+import { generalConst } from "../constants/general";
 import PropTypes from "prop-types";
 
-
-const isNumberKey = (key) => key !== "Borrar" && key !== "Continuar";
+const isNumberKey = (key) =>
+  key !== generalConst.DELETE && key !== generalConst.CONTINUE;
 
 const KeyPad = ({ handleClickKey, areNumberDisabled, isContinueDisabled }) => {
   const arrayNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, "Borrar", 0, "Continuar"];
 
   const checkDisabledButtons = (key) => {
-    if (key === "Continuar" && isContinueDisabled) {
+    if (key === generalConst.CONTINUE && isContinueDisabled) {
       return true;
     }
 

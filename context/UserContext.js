@@ -38,7 +38,7 @@ const UserProvider = (props) => {
       if (Number(clientInfo.clave) === Number(client.clave)) {
         setUser({});
         router.push("/operacion/index");
-        setTimeout(() => setLoading(false), 3000);
+        setTimeout(() => setLoading(false), 4000);
         setMessageErrorUser("");
       } else {
         setLoading(false);

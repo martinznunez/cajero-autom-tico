@@ -1,7 +1,6 @@
 import styles from "../../styles/Home.module.css";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import Link from "next/link";
 import Swal from "sweetalert2";
 
 import { useRouter } from "next/router";
@@ -57,7 +56,7 @@ const Operations = () => {
             margin: auto;
             margin-top: 6vh;
             width: 90%;
-            min-height: 10vh;
+            min-height: 30vh;
             flex-direction: row;
             align-items: center;
             justify-content: space-around;
@@ -82,7 +81,7 @@ const Operations = () => {
             margin: 10px;
             color: #f1f1f1;
             font-size: 1.3rem;
-            height: 55px;
+            height: 60px;
             background: dodgerblue;
             border-radius: 6px;
           }

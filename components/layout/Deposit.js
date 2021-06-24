@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
+import { UserContext } from "../../context/UserContext";
+import { generalConst, TypeOfOperationConst } from "../../constants/general";
 import KeyPad from "../KeyPad";
 import Title from "../Title";
 import DepositAmount from "../DepositAmount";
-import { useRouter } from "next/router";
-import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -40,7 +41,7 @@ const Deposit = () => {
     try {
       const response = await axios.patch(url, {
         data: {
-          typeOfOperation: "deposit",
+          typeOfOperation: TypeOfOperationConst.DEPOSIT,
           amount: totalToDeposit,
         },
       });
@@ -49,7 +50,7 @@ const Deposit = () => {
         setClientInfo(response.data);
         router.push("/operacion/exito");
         setTypeToOperation({
-          typeOperation: "deposito",
+          typeOperation: TypeOfOperationConst.DEPOSIT,
           balance: totalToDeposit,
         });
       }
@@ -63,12 +64,12 @@ const Deposit = () => {
       return;
     }
 
-    if (key === "Continuar") {
+    if (key === generalConst.CONTINUE) {
       updateClient();
       return;
     }
 
-    if (key === "Borrar") {
+    if (key === generalConst.DELETE) {
       const valueToDiscount =
         inputsValues[activeInput] * inputsMap[activeInput];
 

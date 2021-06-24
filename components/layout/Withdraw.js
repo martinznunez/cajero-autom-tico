@@ -1,6 +1,7 @@
 import { Form, FormGroup, Label, CustomInput } from "reactstrap";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
+import { TypeOfOperationConst } from "../../constants/general";
 import { useRouter } from "next/router";
 import Title from "../Title";
 import axios from "axios";
@@ -21,7 +22,7 @@ const Withdraw = () => {
     try {
       const response = await axios.patch(url, {
         data: {
-          typeOfOperation: "extraccion",
+          typeOfOperation: TypeOfOperationConst.WITHDRAW,
           amount: moneySelect,
         },
       });
@@ -30,7 +31,7 @@ const Withdraw = () => {
         setClientInfo(response.data);
         router.push("/operacion/exito");
         setTypeToOperation({
-          typeOperation: "extraccion",
+          typeOperation: TypeOfOperationConst.WITHDRAW,
           balance: moneySelect,
         });
       }
