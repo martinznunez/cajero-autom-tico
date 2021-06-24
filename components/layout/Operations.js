@@ -1,6 +1,7 @@
 import styles from "../../styles/Home.module.css";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 
 import { useRouter } from "next/router";
@@ -122,6 +123,10 @@ const Operations = () => {
       </style>
     </>
   );
+};
+
+Operations.propTypes = {
+  clientInfo: PropTypes.object,
 };
 
 export default Operations;

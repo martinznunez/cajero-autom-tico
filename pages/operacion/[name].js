@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import TypeOperations from "../../components/TypeOperations";
 
 import { useRouter } from "next/router";
@@ -11,6 +12,10 @@ const Operations = () => {
       <TypeOperations pathname={name} />
     </>
   );
+};
+
+Operations.propTypes = {
+  name: PropTypes.string,
 };
 
 export default Operations;

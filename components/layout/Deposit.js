@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../../context/UserContext";
 import { generalConst, TypeOfOperationConst } from "../../constants/general";
+import PropTypes from "prop-types";
 import KeyPad from "../KeyPad";
 import Title from "../Title";
 import DepositAmount from "../DepositAmount";
@@ -218,6 +219,12 @@ const Deposit = () => {
       </style>
     </>
   );
+};
+
+Deposit.propTypes = {
+  clientInfo: PropTypes.object,
+  setClientInfo: PropTypes.func,
+  setTypeToOperation: PropTypes.func,
 };
 
 export default Deposit;

@@ -1,7 +1,8 @@
 import { generalConst } from "../constants/general";
+import PropTypes from "prop-types";
 import KeyPad from "./KeyPad";
 
-const KeyCode = ({
+const AuthView = ({
   setNumberDni,
   numberDni,
   setNumberClave,
@@ -11,9 +12,9 @@ const KeyCode = ({
   isContinueDisabled,
   setIsContinueDisabled,
   setTurn,
+  turn,
   isPadDisabled,
   setIsPadDisabled,
-  turn,
 }) => {
   const handleClick = (number) => {
     if (number === generalConst.CONTINUE) {
@@ -67,4 +68,19 @@ const KeyCode = ({
   );
 };
 
-export default KeyCode;
+AuthView.propTypes = {
+  numberDni: PropTypes.array,
+  setNumberDni: PropTypes.func,
+  numberClave: PropTypes.array,
+  setNumberClave: PropTypes.func,
+  isPasswordInputDisabled: PropTypes.bool,
+  setIsPasswordInputDisabled: PropTypes.func,
+  isContinueDisabled: PropTypes.bool,
+  setIsContinueDisabled: PropTypes.func,
+  setTurn: PropTypes.func,
+  isPadDisabled: PropTypes.bool,
+  turn: PropTypes.string,
+  setIsPadDisabled: PropTypes.func,
+};
+
+export default AuthView;

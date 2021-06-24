@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../../context/UserContext";
 import { generalConst, TypeOfOperationConst } from "../../constants/general";
+import PropTypes from "prop-types";
 import Title from "../Title";
 import KeyPad from "../KeyPad";
 import axios from "axios";
@@ -178,6 +179,12 @@ const AmountMoney = () => {
       </style>
     </>
   );
+};
+
+AmountMoney.propTypes = {
+  clientInfo: PropTypes.object,
+  setClientInfo: PropTypes.func,
+  setTypeToOperation: PropTypes.func,
 };
 
 export default AmountMoney;

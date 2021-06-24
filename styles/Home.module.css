@@ -8,7 +8,7 @@
   height: 100vh;
 }
 
-.seccionLogin {
+.sectionLogin {
   border: 3px solid;
   width: 50%;
   height: 55vh;
@@ -17,7 +17,7 @@
 }
 
 @media (min-width: 900px) {
-  .seccionLogin {
+  .sectionLogin {
     width: 65%;
     height: 80vh;
   }

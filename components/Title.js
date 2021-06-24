@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const Title = ({ title }) => {
   return (
     <>
@@ -22,6 +23,9 @@ const Title = ({ title }) => {
       </style>
     </>
   );
+};
+Title.propTypes = {
+  title: PropTypes.string,
 };
 
 export default Title;
