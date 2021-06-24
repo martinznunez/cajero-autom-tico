@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../../context/UserContext";
+import { generalConst, TypeOfOperationConst } from "../../constants/general";
 import Title from "../Title";
 import KeyPad from "../KeyPad";
 import axios from "axios";
@@ -15,14 +16,12 @@ const AmountMoney = () => {
   const [padNumber, setPadNumber] = useState([]);
 
   const updateClient = async (newAmount) => {
-    console.log(newAmount);
-
     const url = `/api/balance/${clientInfo.id}`;
 
     try {
       const response = await axios.patch(url, {
         data: {
-          typeOfOperation: "extraccion",
+          typeOfOperation: TypeOfOperationConst.WITHDRAW,
           amount: newAmount.join(""),
         },
       });
@@ -31,7 +30,7 @@ const AmountMoney = () => {
         setClientInfo(response.data);
         router.push("/operacion/exito");
         setTypeToOperation({
-          typeOperation: "extracción",
+          typeOperation: TypeOfOperationConst.WITHDRAW,
           balance: newAmount.join(""),
         });
       }
@@ -45,12 +44,12 @@ const AmountMoney = () => {
 
     setIsContinueDisabled(false);
 
-    if (key === "Borrar") {
+    if (key === generalConst.DELETE) {
       setPadNumber([]);
       setIsContinueDisabled(true);
     }
 
-    if (key === "Continuar") {
+    if (key === generalConst.CONTINUE) {
       const newAmount = padNumber;
 
       if (newAmount.join("") <= clientInfo.saldo) {

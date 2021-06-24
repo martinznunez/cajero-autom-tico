@@ -1,14 +1,13 @@
+import { useState, useEffect, useContext, clientInfo } from "react";
+import { UserContext } from "../../context/UserContext";
+import { generalConst } from "../../constants/general";
 import Title from "../Title";
 import InputForm from "../InputForm";
 
 import AuthView from "../AuthView";
 
-import { useState, useEffect, useContext, clientInfo } from "react";
-
-import { UserContext } from "../../context/UserContext";
-
 const Login = () => {
-  const { setUser, setLoading, messageErrorUser } = useContext(UserContext);
+  const { setUser, messageErrorUser } = useContext(UserContext);
 
   const [numberDni, setNumberDni] = useState([]);
 
@@ -22,7 +21,7 @@ const Login = () => {
 
   const [isPadDisabled, setIsPadDisabled] = useState(false);
 
-  const [turn, setTurn] = useState("dni");
+  const [turn, setTurn] = useState(generalConst.PASSPORT);
 
   useEffect(() => {
     if (numberClave.length === 4) {

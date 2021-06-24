@@ -1,4 +1,4 @@
-
+import { generalConst } from "../constants/general";
 import KeyPad from "./KeyPad";
 
 const KeyCode = ({
@@ -16,20 +16,20 @@ const KeyCode = ({
   turn,
 }) => {
   const handleClick = (number) => {
-    if (number === "Continuar") {
-      handleClickContinuar();
+    if (number === generalConst.CONTINUE) {
+      handleClickContinue();
       return;
     }
 
-    if (turn === "dni") {
+    if (turn === generalConst.PASSPORT) {
       setNumberDni([...numberDni, number]);
     }
 
-    if (turn === "clave") {
+    if (turn === generalConst.PASSWORD) {
       setNumberClave([...numberClave, number]);
     }
 
-    if (number === "Borrar" && turn === "dni") {
+    if (number === generalConst.DELETE && turn === generalConst.PASSPORT) {
       setNumberDni([]);
       setIsContinueDisabled(true);
       setIsPadDisabled(false);
@@ -37,7 +37,7 @@ const KeyCode = ({
       return;
     }
 
-    if (number === "Borrar" && turn === "clave") {
+    if (number === generalConst.DELETE && turn === generalConst.PASSWORD) {
       setNumberClave([]);
       setIsPadDisabled(false);
       setIsContinueDisabled(true);
@@ -45,9 +45,9 @@ const KeyCode = ({
     }
   };
 
-  const handleClickContinuar = () => {
+  const handleClickContinue = () => {
     if (numberDni.length >= 7 && isPasswordInputDisabled) {
-      setTurn("clave");
+      setTurn(generalConst.PASSWORD);
 
       setIsContinueDisabled(true);
       setIsPasswordInputDisabled(true);
@@ -56,7 +56,7 @@ const KeyCode = ({
     }
   };
 
-  const areNumberDisabled = isPadDisabled && turn === "dni";
+  const areNumberDisabled = isPadDisabled && turn === generalConst.PASSPORT;
 
   return (
     <KeyPad
