@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, clientInfo } from "react";
+import { useState, useEffect, useContext, useCallback, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
 import { generalConst } from "../../constants/general";
 import PropTypes from "prop-types";
@@ -15,19 +15,40 @@ const Login = () => {
 
   const [isPasswordInputDisabled, setIsPasswordInputDisabled] = useState(true);
 
-  const [numberClave, setNumberClave] = useState([]);
+  const [numberPassword, setNumberPassword] = useState([]);
 
   const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
   const [isPadDisabled, setIsPadDisabled] = useState(false);
 
-  const [turn, setTurn] = useState(generalConst.PASSPORT);
+  const [turn, setTurn] = useState(generalConst.DOCUMENT);
 
   useEffect(() => {
-    if (numberClave.length === 4) {
-      setUser({ numberDni, numberClave });
+    if (numberPassword.length === 4) {
+      setUser({ numberDni, numberPassword });
     }
-  }, [numberClave, numberDni, setUser]);
+  }, [numberPassword, numberDni, setUser]);
+
+  const timer = useRef();
+
+  const clearAndInitTimeout = useCallback(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      setNumberDni([]);
+      setNumberPassword([]);
+
+      setTurn(generalConst.DOCUMENT);
+      setIsPadDisabled(false);
+    }, 20000);
+  }, []);
+
+  useEffect(() => {
+    if (numberDni.length > 0 || numberPassword.length > 0) {
+      clearAndInitTimeout();
+    }
+
+    return () => clearTimeout(timer.current);
+  }, [clearAndInitTimeout, numberDni.length, numberPassword.length]);
 
   return (
     <>
@@ -38,7 +59,7 @@ const Login = () => {
           numberDni={numberDni}
           setIsDniInputDisabled={setIsDniInputDisabled}
           isDniInputDisabled={isDniInputDisabled}
-          numberClave={numberClave}
+          numberPassword={numberPassword}
           isPasswordInputDisabled={isPasswordInputDisabled}
           setIsPasswordInputDisabled={setIsPasswordInputDisabled}
           setIsContinueDisabled={setIsContinueDisabled}
@@ -54,8 +75,8 @@ const Login = () => {
         isDniInputDisabled={isDniInputDisabled}
         setNumberDni={setNumberDni}
         numberDni={numberDni}
-        setNumberClave={setNumberClave}
-        numberClave={numberClave}
+        setNumberPassword={setNumberPassword}
+        numberPassword={numberPassword}
         isPasswordInputDisabled={isPasswordInputDisabled}
         setIsPasswordInputDisabled={setIsPasswordInputDisabled}
         setIsContinueDisabled={setIsContinueDisabled}
