@@ -5,8 +5,8 @@ import KeyPad from "./KeyPad";
 const AuthView = ({
   setNumberDni,
   numberDni,
-  setNumberClave,
-  numberClave,
+  setNumberPassword,
+  numberPassword,
   isPasswordInputDisabled,
   setIsPasswordInputDisabled,
   isContinueDisabled,
@@ -22,15 +22,15 @@ const AuthView = ({
       return;
     }
 
-    if (turn === generalConst.PASSPORT) {
+    if (turn === generalConst.DOCUMENT) {
       setNumberDni([...numberDni, number]);
     }
 
     if (turn === generalConst.PASSWORD) {
-      setNumberClave([...numberClave, number]);
+      setNumberPassword([...numberPassword, number]);
     }
 
-    if (number === generalConst.DELETE && turn === generalConst.PASSPORT) {
+    if (number === generalConst.DELETE && turn === generalConst.DOCUMENT) {
       setNumberDni([]);
       setIsContinueDisabled(true);
       setIsPadDisabled(false);
@@ -39,7 +39,7 @@ const AuthView = ({
     }
 
     if (number === generalConst.DELETE && turn === generalConst.PASSWORD) {
-      setNumberClave([]);
+      setNumberPassword([]);
       setIsPadDisabled(false);
       setIsContinueDisabled(true);
       return;
@@ -57,7 +57,7 @@ const AuthView = ({
     }
   };
 
-  const areNumberDisabled = isPadDisabled && turn === generalConst.PASSPORT;
+  const areNumberDisabled = isPadDisabled && turn === generalConst.DOCUMENT;
 
   return (
     <KeyPad
@@ -71,8 +71,8 @@ const AuthView = ({
 AuthView.propTypes = {
   numberDni: PropTypes.array,
   setNumberDni: PropTypes.func,
-  numberClave: PropTypes.array,
-  setNumberClave: PropTypes.func,
+  numberPassword: PropTypes.array,
+  setNumberPassword: PropTypes.func,
   isPasswordInputDisabled: PropTypes.bool,
   setIsPasswordInputDisabled: PropTypes.func,
   isContinueDisabled: PropTypes.bool,

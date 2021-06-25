@@ -4,7 +4,7 @@ const InputForm = ({
   numberDni,
   setIsDniInputDisabled,
   isDniInputDisabled,
-  numberClave,
+  numberPassword,
   isPasswordInputDisabled,
   setIsPasswordInputDisabled,
   setIsContinueDisabled,
@@ -27,13 +27,13 @@ const InputForm = ({
   };
 
   useEffect(() => {
-    if (numberClave.length === 4) {
+    if (numberPassword.length === 4) {
       setIsContinueDisabled(true);
       setIsPasswordInputDisabled(true);
       setIsDniInputDisabled(true);
     }
   }, [
-    numberClave.length,
+    numberPassword.length,
     setIsContinueDisabled,
     setIsPasswordInputDisabled,
     setIsDniInputDisabled,
@@ -62,7 +62,7 @@ const InputForm = ({
           disabled={isPasswordInputDisabled ? true : false}
           type="text"
           placeholder="Clave"
-          defaultValue={numberClave.join("")}
+          defaultValue={numberPassword.join("")}
           onFocus={() => handleFocusInputClave()}
         />
       </div>
@@ -125,7 +125,7 @@ InputForm.propTypes = {
   isDniInputDisabled: PropTypes.bool,
   isPasswordInputDisabled: PropTypes.bool,
   setIsPasswordInputDisabled: PropTypes.func,
-  numberClave: PropTypes.array,
+  numberPassword: PropTypes.array,
   setIsContinueDisabled: PropTypes.func,
   setIsPadDisabled: PropTypes.func,
 };

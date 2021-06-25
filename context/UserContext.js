@@ -1,8 +1,8 @@
-import { createContext, useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { Spinner } from "../components/Spinner";
-export const UserContext = createContext();
 import styles from "../styles/Home.module.css";
+import { createContext, useState, useEffect, useCallback } from "react";
+export const UserContext = createContext();
+import { Spinner } from "../components/Spinner";
+import axios from "axios";
 
 import { useRouter } from "next/router";
 
@@ -26,7 +26,7 @@ const UserProvider = (props) => {
 
     const client = {
       dni: user.numberDni.join(""),
-      clave: user.numberClave.join(""),
+      clave: user.numberPassword.join(""),
     };
 
     const url = `api/users/${client.dni}`;
@@ -50,7 +50,7 @@ const UserProvider = (props) => {
         setLoading(false);
       }, 3000);
     }
-  }, [clientInfo, router, user.numberClave, user.numberDni]);
+  }, [clientInfo, router, user.numberPassword, user.numberDni]);
 
   useEffect(() => {
     if (user.numberDni) {

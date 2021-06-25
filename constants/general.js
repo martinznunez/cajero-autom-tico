@@ -1,7 +1,7 @@
 export const generalConst = {
   DELETE: "Borrar",
   CONTINUE: "Continuar",
-  PASSPORT: "dni",
+  DOCUMENT: "dni",
   PASSWORD: "clave",
 };
 
