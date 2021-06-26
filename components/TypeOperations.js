@@ -42,7 +42,7 @@ const TypeOperations = ({ pathname }) => {
 TypeOperations.propTypes = {
   clientInfo: PropTypes.object,
   setLoading: PropTypes.bool,
-  pathname: PropTypes.string.isRequired,
+  pathname: PropTypes.string,
 };
 
 export default TypeOperations;

@@ -1,13 +1,25 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useRouter } from "next/router";
+import axios from "axios";
 import PropTypes from "prop-types";
 import Title from "../Title";
+
 const ConsultBalance = () => {
   const router = useRouter();
   const { clientInfo } = useContext(UserContext);
+  const { dni } = clientInfo;
 
-  const { saldo } = clientInfo;
+  const [userBalance, setUserBalance] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await axios.get(`/api/users/${dni}`);
+      setUserBalance(response.data.saldo);
+    };
+
+    getUser();
+  }, [dni]);
 
   const formatCurrency = (value) => {
     const formatterDolar = new Intl.NumberFormat("en-US", {
@@ -24,7 +36,7 @@ const ConsultBalance = () => {
       <div className="container-saldo">
         <div>
           <Title title={"Su saldo es"} />
-          <p>{formatCurrency(saldo)}</p>
+          <p>{formatCurrency(userBalance)}</p>
         </div>
         <div>
           <p>¿Desea realizar otra operacion?</p>

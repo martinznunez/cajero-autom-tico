@@ -1,4 +1,4 @@
-import { users } from "../../../data/users";
+import users from "../../../data/users.json";
 
 export default function personHandler({ query: { id } }, res) {
   const filtered = users.filter((user) => Number(user.dni) === Number(id));
