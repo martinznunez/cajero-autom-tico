@@ -1,6 +1,7 @@
-import { users } from "../../../data/users";
+const fs = require("fs");
+import users from "../../../data/users.json";
 import { TypeOfOperationConst } from "../../../constants/general";
-export default function personHandler({ method, body, query: { id } }, res) {
+export default function personHandler({ body, query: { id } }, res) {
   const filteredUser = users.find((user) => Number(user.id) === Number(id));
 
   if (!filteredUser) {
@@ -20,6 +21,15 @@ export default function personHandler({ method, body, query: { id } }, res) {
   if (typeOfOperation === TypeOfOperationConst.WITHDRAW) {
     filteredUser.saldo = Number(balance) - Number(amount);
   }
+
+  const updatedUsers = users.map((user) => {
+    if (user.id === filteredUser.id) {
+      return filteredUser;
+    }
+    return user;
+  });
+
+  fs.writeFileSync("data/users.json", JSON.stringify(updatedUsers, null, 4));
 
   res.status(200).json(filteredUser);
 }
